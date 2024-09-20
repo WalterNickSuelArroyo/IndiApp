@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class DefaultTextField extends StatelessWidget {
+class DefaultTextFieldOutlined extends StatelessWidget {
   String text;
   IconData icon;
   EdgeInsetsGeometry margin;
 
-  DefaultTextField(
+  DefaultTextFieldOutlined(
       {required this.text,
       required this.icon,
       this.margin = const EdgeInsets.only(top: 50, left: 20, right: 20)});
@@ -16,13 +16,18 @@ class DefaultTextField extends StatelessWidget {
       height: 48,
       margin: margin,
       decoration: const BoxDecoration(
-          color: Colors.white,
+          color: Color.fromRGBO(255, 255, 255, 0.2),
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
       child: TextFormField(
         decoration: InputDecoration(
             label: Text(text),
-            border: InputBorder.none,
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Color.fromARGB(255, 35, 161, 183), width: 1)),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Color.fromARGB(255, 34, 101, 202), width: 1)),
             prefixIcon: Container(
               margin: EdgeInsets.only(top: 10),
               child: Wrap(

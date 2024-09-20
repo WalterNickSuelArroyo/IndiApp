@@ -38,6 +38,7 @@ class LoginContent extends StatelessWidget {
           ),
         ),
         Container(
+          height: MediaQuery.of(context).size.height,
           margin: const EdgeInsets.only(left: 60, bottom: 60),
           decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -52,35 +53,37 @@ class LoginContent extends StatelessWidget {
                   bottomLeft: Radius.circular(40))),
           child: Container(
             margin: const EdgeInsets.only(left: 25, right: 25),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 40,
-                ),
-                _textWelcome('Welcome'),
-                _textWelcome('back...'),
-                _imageCar(),
-                _textLogin(),
-                DefaultTextField(text: 'Email', icon: Icons.email_outlined),
-                DefaultTextField(
-                  text: 'Password',
-                  icon: Icons.lock_outlined,
-                  margin: EdgeInsets.only(top: 20, left: 20, right: 20),
-                ),
-                Spacer(),
-                DefaultButton(
-                  text: 'Iniciar sesión',
-                ),
-                _separatorOr(),
-                const SizedBox(
-                  height: 10,
-                ),
-                _textDontHaveAccount(context),
-                const SizedBox(
-                  height: 50,
-                )
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  _textWelcome('Welcome'),
+                  _textWelcome('back...'),
+                  _imageCar(),
+                  _textLogin(),
+                  DefaultTextField(text: 'Email', icon: Icons.email_outlined),
+                  DefaultTextField(
+                    text: 'Password',
+                    icon: Icons.lock_outlined,
+                    margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.2,),
+                  DefaultButton(
+                    text: 'Iniciar sesión',
+                  ),
+                  _separatorOr(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  _textDontHaveAccount(context),
+                  const SizedBox(
+                    height: 50,
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -141,7 +144,7 @@ class LoginContent extends StatelessWidget {
     return Container(
       alignment: Alignment.centerRight,
       child: Image.asset(
-        'assets/img/car.png',
+        'assets/img/car_white.png',
         width: 150,
         height: 150,
       ),
