@@ -1,93 +1,127 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:indi_app/src/presentation/pages/auth/login/bloc/LoginBloc.dart';
+import 'package:indi_app/src/presentation/pages/auth/login/bloc/LoginEvent.dart';
+import 'package:indi_app/src/presentation/pages/auth/login/bloc/LoginState.dart';
+import 'package:indi_app/src/presentation/utils/BlocFormItem.dart';
 import 'package:indi_app/src/presentation/widgets/DefaultButton.dart';
 import 'package:indi_app/src/presentation/widgets/DefaultTextField.dart';
 
 class LoginContent extends StatelessWidget {
-  const LoginContent({super.key});
+  final LoginState state;
+
+  LoginContent(this.state);
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
+    return Form(
+      key: state.formKey,
+      child: Stack(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
                 colors: [
-                  Color.fromARGB(255, 12, 38, 145),
-                  Color.fromARGB(255, 34, 156, 249),
-                ]),
-          ),
-          padding: const EdgeInsets.only(left: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _textLoginRotated(),
-              SizedBox(height: 65),
-              _texRegisterRotated(context),
-              SizedBox(
-                height: 90,
-              )
-            ],
-          ),
-        ),
-        Container(
-          height: MediaQuery.of(context).size.height,
-          margin: const EdgeInsets.only(left: 60, bottom: 60),
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [
-                    Color.fromARGB(255, 14, 29, 166),
-                    Color.fromARGB(255, 30, 112, 227),
-                  ]),
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  bottomLeft: Radius.circular(40))),
-          child: Container(
-            margin: const EdgeInsets.only(left: 25, right: 25),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  _textWelcome('Welcome'),
-                  _textWelcome('back...'),
-                  _imageCar(),
-                  _textLogin(),
-                  DefaultTextField(text: 'Email', icon: Icons.email_outlined),
-                  DefaultTextField(
-                    text: 'Password',
-                    icon: Icons.lock_outlined,
-                    margin: EdgeInsets.only(top: 20, left: 20, right: 20),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.2,),
-                  DefaultButton(
-                    text: 'Iniciar sesión',
-                  ),
-                  _separatorOr(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  _textDontHaveAccount(context),
-                  const SizedBox(
-                    height: 50,
-                  )
+                  Color.fromARGB(255, 0, 123, 175), // #007BAF
+                  Color.fromARGB(255, 0, 225, 255), // #00E1FF
                 ],
               ),
             ),
+            padding: const EdgeInsets.only(left: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _textLoginRotated(),
+                SizedBox(height: 65),
+                _texRegisterRotated(context),
+                SizedBox(
+                  height: 90,
+                )
+              ],
+            ),
           ),
-        ),
-      ],
+          Container(
+            height: MediaQuery.of(context).size.height,
+            margin: const EdgeInsets.only(left: 60, bottom: 60),
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [
+                    Color.fromARGB(255, 1, 207, 255), // #01CFFF
+                    Color.fromARGB(255, 0, 79, 115), // #004F73
+                  ],
+                ),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    bottomLeft: Radius.circular(40))),
+            child: Container(
+              margin: const EdgeInsets.only(left: 25, right: 25),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    _textNombre('Thunder'),
+                    _imageCar(),
+                    _textLogin(),
+                    DefaultTextField(
+                        onChanged: (text) {
+                          context.read<LoginBloc>().add(
+                              EmailChanged(email: BlocFormItem(value: text)));
+                        },
+                        validator: (value) {
+                          return state.email.error;
+                        },
+                        text: 'Email',
+                        icon: Icons.email_outlined),
+                    DefaultTextField(
+                      onChanged: (text) {
+                        context.read<LoginBloc>().add(PasswordChanged(
+                            password: BlocFormItem(value: text)));
+                      },
+                      validator: (value) {
+                        return state.password.error;
+                      },
+                      text: 'Contraseña',
+                      icon: Icons.lock_outlined,
+                      margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.08,
+                    ),
+                    DefaultButton(
+                      text: 'Iniciar sesión',
+                      onPressed: () {
+                        if (state.formKey!.currentState!.validate()) {
+                          context.read<LoginBloc>().add(FormSubmit());
+                        } else {
+                          print('El formulario no es valido');
+                        }
+                      },
+                    ),
+                    _separatorOr(),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    _textDontHaveAccount(context),
+                    const SizedBox(
+                      height: 50,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -142,28 +176,28 @@ class LoginContent extends StatelessWidget {
 
   Widget _imageCar() {
     return Container(
-      alignment: Alignment.centerRight,
+      alignment: Alignment.center,
       child: Image.asset(
-        'assets/img/car_white.png',
-        width: 150,
-        height: 150,
+        'assets/img/online_taxi.png',
+        width: 350,
+        height: 350,
       ),
     );
   }
 
   Widget _textLogin() {
-    return Text(
-      "Log in",
+    return const Text(
+      "Iniciar Sesión",
       style: TextStyle(
           fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
     );
   }
 
-  Widget _textWelcome(String text) {
+  Widget _textNombre(String text) {
     return Text(
       text,
-      style: TextStyle(
-          fontSize: 33, color: Colors.white, fontWeight: FontWeight.bold),
+      style: const TextStyle(
+          fontSize: 53, color: Colors.white, fontWeight: FontWeight.bold),
     );
   }
 
