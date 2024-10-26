@@ -3,11 +3,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:indi_app/injection.dart';
 import 'package:indi_app/src/domain/useCases/auth/AuthUseCases.dart';
+import 'package:indi_app/src/domain/useCases/users/UsersUseCases.dart';
 import 'package:indi_app/src/presentation/pages/auth/login/bloc/LoginBloc.dart';
 import 'package:indi_app/src/presentation/pages/auth/login/bloc/LoginEvent.dart';
 import 'package:indi_app/src/presentation/pages/auth/register/bloc/RegisterBloc.dart';
 import 'package:indi_app/src/presentation/pages/auth/register/bloc/RegisterEvent.dart';
 import 'package:indi_app/src/presentation/pages/client/home/bloc/ClientHomeBloc.dart';
+import 'package:indi_app/src/presentation/pages/profile/info/bloc/ProfileInfoBloc.dart';
+import 'package:indi_app/src/presentation/pages/profile/info/bloc/ProfileInfoEvent.dart';
+import 'package:indi_app/src/presentation/pages/profile/update/bloc/ProfileUpdateBloc.dart';
 
 List<BlocProvider> blocProviders = [
   BlocProvider<LoginBloc>(create: (context) => LoginBloc(locator<AuthUseCases>())..add(LoginInitEvent())),
@@ -16,8 +20,8 @@ List<BlocProvider> blocProviders = [
   BlocProvider<ClientHomeBloc>(create: (context) => ClientHomeBloc(locator<AuthUseCases>())),
   // BlocProvider<DriverHomeBloc>(create: (context) => DriverHomeBloc(locator<AuthUseCases>())),
   // BlocProvider<RolesBloc>(create: (context) => RolesBloc(locator<AuthUseCases>())..add(GetRolesList())),
-  // BlocProvider<ProfileInfoBloc>(create: (context) => ProfileInfoBloc(locator<AuthUseCases>())..add(GetUserInfo())),
-  // BlocProvider<ProfileUpdateBloc>(create: (context) => ProfileUpdateBloc(locator<UsersUseCases>(), locator<AuthUseCases>())),
+  BlocProvider<ProfileInfoBloc>(create: (context) => ProfileInfoBloc(locator<AuthUseCases>())..add(GetUserInfo())),
+  BlocProvider<ProfileUpdateBloc>(create: (context) => ProfileUpdateBloc(locator<UsersUseCases>(), locator<AuthUseCases>())),
   // BlocProvider<ClientMapSeekerBloc>(create: (context) => ClientMapSeekerBloc(context.read<BlocSocketIO>(), locator<GeolocatorUseCases>(), locator<SocketUseCases>())),
   // BlocProvider<ClientMapBookingInfoBloc>(create: (context) => ClientMapBookingInfoBloc(context.read<BlocSocketIO>(), locator<GeolocatorUseCases>(), locator<ClientRequestsUseCases>(), locator<AuthUseCases>())),
   // BlocProvider<DriverClientRequestsBloc>(create: (context) => DriverClientRequestsBloc(context.read<BlocSocketIO>(), locator<ClientRequestsUseCases>(), locator<DriversPositionUseCases>(), locator<AuthUseCases>(), locator<DriverTripRequestUseCases>())),

@@ -1,13 +1,19 @@
 import 'package:indi_app/src/data/dataSource/local/SharePref.dart';
 import 'package:indi_app/src/data/dataSource/remote/services/AuthService.dart';
+import 'package:indi_app/src/data/dataSource/remote/services/UsersService.dart';
 import 'package:indi_app/src/data/repository/AuthRepositoryImpl.dart';
+import 'package:indi_app/src/data/repository/UsersRepositoryImpl.dart';
+import 'package:indi_app/src/domain/models/AuthResponse.dart';
 import 'package:indi_app/src/domain/repository/AuthRepository.dart';
+import 'package:indi_app/src/domain/repository/UsersRepository.dart';
 import 'package:indi_app/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:indi_app/src/domain/useCases/auth/GetUserSessionUseCase.dart';
 import 'package:indi_app/src/domain/useCases/auth/LoginUseCase.dart';
 import 'package:indi_app/src/domain/useCases/auth/LogoutUseCase.dart';
 import 'package:indi_app/src/domain/useCases/auth/RegisterUseCase.dart';
 import 'package:indi_app/src/domain/useCases/auth/SaveUserSessionUseCase.dart';
+import 'package:indi_app/src/domain/useCases/users/UpdateUserUseCase.dart';
+import 'package:indi_app/src/domain/useCases/users/UsersUseCases.dart';
 import 'package:injectable/injectable.dart';
 
 @module
@@ -24,22 +30,22 @@ abstract class AppModule {
   //     .build()
   // );
 
-  // @injectable
-  // Future<String> get token async {
-  //   String token = '';
-  //   final userSession = await sharefPref.read('user');
-  //   if (userSession != null) {
-  //     AuthResponse authResponse = AuthResponse.fromJson(userSession);
-  //     token = authResponse.token;
-  //   }
-  //   return token;
-  // }
+  @injectable
+  Future<String> get token async {
+    String token = '';
+    final userSession = await sharefPref.read('user');
+    if (userSession != null) {
+      AuthResponse authResponse = AuthResponse.fromJson(userSession);
+      token = authResponse.token;
+    }
+    return token;
+  }
 
   @injectable
   AuthService get authService => AuthService();
 
-  // @injectable
-  // UsersService get usersService => UsersService(token);
+  @injectable
+  UsersService get usersService => UsersService(token);
 
   // @injectable
   // DriversPositionService get driversPositionService => DriversPositionService();
@@ -56,8 +62,8 @@ abstract class AppModule {
   @injectable
   AuthRepository get authRepository => AuthRepositoryImpl(authService, sharefPref);
 
-  // @injectable
-  // UsersRepository get usersRepository => UsersRepositoryImpl(usersService);
+  @injectable
+  UsersRepository get usersRepository => UsersRepositoryImpl(usersService);
 
   // @injectable
   // SocketRepository get socketRepository => SocketRepositoryImpl(socket);
@@ -86,11 +92,11 @@ abstract class AppModule {
     logout: LogoutUseCase(authRepository)
   );
 
-  //  @injectable
-  //  UsersUseCases get usersUseCases => UsersUseCases(
-  //   update: UpdateUserUseCase(usersRepository),
-  //   updateNotificationToken: UpdateNotificationTokenUseCase(usersRepository)
-  // );
+   @injectable
+   UsersUseCases get usersUseCases => UsersUseCases(
+    update: UpdateUserUseCase(usersRepository),
+    // updateNotificationToken: UpdateNotificationTokenUseCase(usersRepository)
+  );
 
   // @injectable
   //  GeolocatorUseCases get geolocatorUseCases => GeolocatorUseCases(

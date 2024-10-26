@@ -12,9 +12,13 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:indi_app/src/data/dataSource/local/SharePref.dart' as _i6;
 import 'package:indi_app/src/data/dataSource/remote/services/AuthService.dart'
     as _i4;
-import 'package:indi_app/src/di/AppModule.dart' as _i7;
+import 'package:indi_app/src/data/dataSource/remote/services/UsersService.dart'
+    as _i8;
+import 'package:indi_app/src/di/AppModule.dart' as _i10;
 import 'package:indi_app/src/domain/repository/AuthRepository.dart' as _i3;
+import 'package:indi_app/src/domain/repository/UsersRepository.dart' as _i7;
 import 'package:indi_app/src/domain/useCases/auth/AuthUseCases.dart' as _i5;
+import 'package:indi_app/src/domain/useCases/users/UsersUseCases.dart' as _i9;
 import 'package:injectable/injectable.dart' as _i2;
 
 extension GetItInjectableX on _i1.GetIt {
@@ -33,8 +37,12 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i4.AuthService>(() => appModule.authService);
     gh.factory<_i5.AuthUseCases>(() => appModule.authUseCases);
     gh.factory<_i6.SharefPref>(() => appModule.sharefPref);
+    gh.factoryAsync<String>(() => appModule.token);
+    gh.factory<_i7.UsersRepository>(() => appModule.usersRepository);
+    gh.factory<_i8.UsersService>(() => appModule.usersService);
+    gh.factory<_i9.UsersUseCases>(() => appModule.usersUseCases);
     return this;
   }
 }
 
-class _$AppModule extends _i7.AppModule {}
+class _$AppModule extends _i10.AppModule {}

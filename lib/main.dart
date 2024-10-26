@@ -6,6 +6,7 @@ import 'package:indi_app/injection.dart';
 import 'package:indi_app/src/presentation/pages/auth/login/LoginPage.dart';
 import 'package:indi_app/src/presentation/pages/auth/register/RegisterPage.dart';
 import 'package:indi_app/src/presentation/pages/client/home/ClientHomePage.dart';
+import 'package:indi_app/src/presentation/pages/profile/update/ProfileUpdatePage.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
           'login': (BuildContext context) => const LoginPage(),
           'register': (BuildContext context) => const RegisterPage(),
           'client/home': (BuildContext context) => const ClientHomePage(),
+          'profile/update': (BuildContext context) => const ProfileUpdatePage(),
         },
       ),
     );
