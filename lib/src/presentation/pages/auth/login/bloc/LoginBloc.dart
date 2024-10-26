@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:indi_app/src/domain/models/AuthResponse.dart';
 import 'package:indi_app/src/domain/useCases/auth/AuthUseCases.dart';
-import 'package:indi_app/src/domain/useCases/auth/LoginUseCase.dart';
 import 'package:indi_app/src/domain/utils/Resource.dart';
 import 'package:indi_app/src/presentation/pages/auth/login/bloc/LoginEvent.dart';
 import 'package:indi_app/src/presentation/pages/auth/login/bloc/LoginState.dart';
@@ -10,14 +10,27 @@ import 'package:indi_app/src/presentation/utils/BlocFormItem.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   
   AuthUseCases authUseCases;
-
+  // UsersUseCases usersUseCases;
   final formKey = GlobalKey<FormState>();
 
-  LoginUseCase loginUseCase = LoginUseCase();
-
   LoginBloc(this.authUseCases) : super(LoginState()) {
-    on<LoginInitEvent>((event, emit) {
+
+    on<LoginInitEvent>((event, emit) async {
+      AuthResponse? authResponse = await authUseCases.getUserSession.run();
+      print('Auth Response Session: ${authResponse?.toJson()}');
       emit(state.copyWith(formKey: formKey));
+      if (authResponse != null) {
+        emit(
+          state.copyWith(
+            response: Success(authResponse),
+            formKey: formKey
+          )
+        );
+      }
+    });
+
+    on<SaveUserSession>((event, emit) async {
+      await authUseCases.saveUserSession.run(event.authResponse);
     });
 
     on<EmailChanged>((event, emit) {
@@ -27,6 +40,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               error: event.email.value.isEmpty ? 'Ingrese el email' : null),
           formKey: formKey));
     });
+
+
 
     on<PasswordChanged>((event, emit) {
       emit(state.copyWith(
@@ -57,5 +72,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         )
       );
     });
+
+    // on<UpdateNotificationToken>((event, emit) async {
+    //   try {
+    //     String? token = await FirebaseMessaging.instance.getToken();
+    //     if (token != null) {
+    //       Resource response = await usersUseCases.updateNotificationToken.run(event.id, token);
+    //     }  
+    //   } catch (e) {
+    //     print('ERROR ACTUALIZANDO TOKEN: $e');
+    //   }
+      
+    // });
   }
 }

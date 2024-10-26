@@ -1,4 +1,3 @@
-import 'package:indi_app/src/data/repository/AuthRepositoryImpl.dart';
 import 'package:indi_app/src/domain/repository/AuthRepository.dart';
 
 class LoginUseCase {

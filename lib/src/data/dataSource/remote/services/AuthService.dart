@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:indi_app/src/data/api/ApiConfig.dart';
 import 'package:http/http.dart' as http;
 import 'package:indi_app/src/domain/models/AuthResponse.dart';
+import 'package:indi_app/src/domain/models/user.dart';
 import 'package:indi_app/src/domain/utils/ListToString.dart';
 import 'package:indi_app/src/domain/utils/Resource.dart';
 // import 'package:indriver_clone_flutter/src/domain/models/AuthResponse.dart';
@@ -34,26 +35,26 @@ class AuthService {
     }
   }
 
-  //  Future<Resource<AuthResponse>> register(User user) async {
-  //   try {
-  //     Uri url = Uri.http(ApiConfig.API_PROJECT, '/auth/register');
-  //     Map<String, String> headers = { 'Content-Type': 'application/json' };
-  //     String body = json.encode(user);
-  //     final response = await http.post(url, headers: headers, body: body);
-  //     final data = json.decode(response.body);
-  //     if (response.statusCode == 200 || response.statusCode == 201) {
-  //       AuthResponse authResponse = AuthResponse.fromJson(data);
-  //       print('Data Remote: ${authResponse.toJson()}');
-  //       print('Token: ${authResponse.token}');
-  //       return Success(authResponse);
-  //     }
-  //     else {
-  //       return ErrorData(listToString(data['message']));
-  //     }
+   Future<Resource<AuthResponse>> register(User user) async {
+    try {
+      Uri url = Uri.http(ApiConfig.API_PROJECT, '/auth/register');
+      Map<String, String> headers = { 'Content-Type': 'application/json' };
+      String body = json.encode(user);
+      final response = await http.post(url, headers: headers, body: body);
+      final data = json.decode(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        AuthResponse authResponse = AuthResponse.fromJson(data);
+        print('Data Remote: ${authResponse.toJson()}');
+        print('Token: ${authResponse.token}');
+        return Success(authResponse);
+      }
+      else {
+        return ErrorData(listToString(data['message']));
+      }
 
-  //   } catch (e) {
-  //     print('Error: $e');
-  //     return ErrorData(e.toString());
-  //   }
-  // }
+    } catch (e) {
+      print('Error: $e');
+      return ErrorData(e.toString());
+    }
+  }
 }

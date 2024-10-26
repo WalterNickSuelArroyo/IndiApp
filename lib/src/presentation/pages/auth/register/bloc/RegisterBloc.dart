@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:indi_app/src/domain/useCases/auth/AuthUseCases.dart';
+import 'package:indi_app/src/domain/utils/Resource.dart';
 import 'package:indi_app/src/presentation/pages/auth/register/bloc/RegisterEvent.dart';
 import 'package:indi_app/src/presentation/pages/auth/register/bloc/RegisterState.dart';
 import 'package:indi_app/src/presentation/utils/BlocFormItem.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
-  // AuthUseCases authUseCases;
+  AuthUseCases authUseCases;
   final formKey = GlobalKey<FormState>();
 
-  RegisterBloc() : super(RegisterState()) {
+  RegisterBloc(this.authUseCases) : super(RegisterState()) {
     on<RegisterInitEvent>((event, emit) {
       emit(state.copyWith( formKey: formKey ));
     });
 
-    // on<SaveUserSession>((event, emit) async {
-    //   await authUseCases.saveUserSession.run(event.authResponse);
-    // });
+    on<SaveUserSession>((event, emit) async {
+      await authUseCases.saveUserSession.run(event.authResponse);
+    });
 
     on<NameChanged>((event, emit) {
       emit(
@@ -107,19 +109,19 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       print('phone: ${state.phone.value}');
       print('password: ${state.password.value}');
       print('confirmPassword: ${state.confirmPassword.value}');
-      // emit(
-      //   state.copyWith(
-      //     response: Loading(),
-      //     formKey: formKey
-      //   )
-      // );
-      // Resource response = await authUseCases.register.run(state.toUser());
-      // emit(
-      //   state.copyWith(
-      //     response: response,
-      //     formKey: formKey
-      //   )
-      // );
+      emit(
+        state.copyWith(
+          response: Loading(),
+          formKey: formKey
+        )
+      );
+      Resource response = await authUseCases.register.run(state.toUser());
+      emit(
+        state.copyWith(
+          response: response,
+          formKey: formKey
+        )
+      );
     });
 
     on<FormReset>((event, emit) {

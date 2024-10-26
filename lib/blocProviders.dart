@@ -7,12 +7,13 @@ import 'package:indi_app/src/presentation/pages/auth/login/bloc/LoginBloc.dart';
 import 'package:indi_app/src/presentation/pages/auth/login/bloc/LoginEvent.dart';
 import 'package:indi_app/src/presentation/pages/auth/register/bloc/RegisterBloc.dart';
 import 'package:indi_app/src/presentation/pages/auth/register/bloc/RegisterEvent.dart';
+import 'package:indi_app/src/presentation/pages/client/home/bloc/ClientHomeBloc.dart';
 
 List<BlocProvider> blocProviders = [
   BlocProvider<LoginBloc>(create: (context) => LoginBloc(locator<AuthUseCases>())..add(LoginInitEvent())),
-  BlocProvider<RegisterBloc>(create: (context) => RegisterBloc()..add(RegisterInitEvent())),
+  BlocProvider<RegisterBloc>(create: (context) => RegisterBloc(locator<AuthUseCases>())..add(RegisterInitEvent())),
   // BlocProvider<BlocSocketIO>(create: (context) => BlocSocketIO(locator<SocketUseCases>(), locator<AuthUseCases>())),
-  // BlocProvider<ClientHomeBloc>(create: (context) => ClientHomeBloc(locator<AuthUseCases>())),
+  BlocProvider<ClientHomeBloc>(create: (context) => ClientHomeBloc(locator<AuthUseCases>())),
   // BlocProvider<DriverHomeBloc>(create: (context) => DriverHomeBloc(locator<AuthUseCases>())),
   // BlocProvider<RolesBloc>(create: (context) => RolesBloc(locator<AuthUseCases>())..add(GetRolesList())),
   // BlocProvider<ProfileInfoBloc>(create: (context) => ProfileInfoBloc(locator<AuthUseCases>())..add(GetUserInfo())),

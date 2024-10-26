@@ -1,3 +1,4 @@
+import 'package:indi_app/src/domain/models/AuthResponse.dart';
 import 'package:indi_app/src/presentation/utils/BlocFormItem.dart';
 
 abstract class RegisterEvent {}
@@ -34,10 +35,10 @@ class ConfirmPasswordChanged extends RegisterInitEvent {
   ConfirmPasswordChanged({ required this.confirmPassword });
 }
 
-// class SaveUserSession extends RegisterInitEvent {
-//   final AuthResponse authResponse;
-//   SaveUserSession({ required this.authResponse });
-// }
+class SaveUserSession extends RegisterInitEvent {
+  final AuthResponse authResponse;
+  SaveUserSession({ required this.authResponse });
+}
 
 class FormSubmit extends RegisterInitEvent {}
 class FormReset extends RegisterInitEvent{}

@@ -1,3 +1,4 @@
+import 'package:indi_app/src/domain/models/AuthResponse.dart';
 import 'package:indi_app/src/presentation/utils/BlocFormItem.dart';
 
 abstract class LoginEvent {}
@@ -13,5 +14,15 @@ class PasswordChanged extends LoginEvent {
   final BlocFormItem password;
   PasswordChanged({required this.password});
 }
+
+class SaveUserSession extends LoginEvent {
+  final AuthResponse authResponse;
+  SaveUserSession({ required this.authResponse });
+}
+
+// class UpdateNotificationToken extends LoginEvent {
+//   final int id;
+//   UpdateNotificationToken({required this.id});
+// }
 
 class FormSubmit extends LoginEvent {}
