@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "367700613467",
+    "project_id": "thunder-test-project",
+    "storage_bucket": "thunder-test-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367700613467:android:ff5a6046a422ddd652627e",
+        "android_client_info": {
+          "package_name": "com.example.indi_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdg_q_YyZjzEnpKFoqNEyhC7alce3ZWeU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class DefaultTextField extends StatelessWidget {
   String text;
   String? initialValue;
@@ -8,6 +9,7 @@ class DefaultTextField extends StatelessWidget {
   EdgeInsetsGeometry margin;
   String? Function(String?)? validator;
   Color backgroundColor;
+  TextInputType keyboardType;
 
   DefaultTextField({
     required this.text,
@@ -16,7 +18,8 @@ class DefaultTextField extends StatelessWidget {
     this.margin = const EdgeInsets.only(top: 50, left: 20, right: 20),
     this.validator,
     this.backgroundColor = Colors.white,
-    this.initialValue
+    this.initialValue,
+    this.keyboardType = TextInputType.text
     }
   );
       
@@ -35,10 +38,11 @@ class DefaultTextField extends StatelessWidget {
           onChanged(text);
         },
         style: TextStyle(
-          fontSize: 13
+          fontSize: 18
         ),
         initialValue: initialValue,
         validator: validator,
+        keyboardType: keyboardType,
         decoration: InputDecoration(
             label: Text(
               text,

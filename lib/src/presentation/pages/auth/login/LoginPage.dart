@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:indi_app/blocSocketIO/BlocSocketIO.dart';
+import 'package:indi_app/blocSocketIO/BlocSocketIOEvent.dart';
 import 'package:indi_app/src/domain/models/AuthResponse.dart';
 import 'package:indi_app/src/domain/utils/Resource.dart';
 import 'package:indi_app/src/presentation/pages/auth/login/LoginContent.dart';
@@ -29,7 +31,15 @@ class _LoginPageState extends State<LoginPage> {
           print('Success Data: ${response.data}');
           final authResponse = response.data as AuthResponse;
           context.read<LoginBloc>().add(SaveUserSession(authResponse: authResponse));
-          Navigator.pushNamedAndRemoveUntil(context, 'client/home', (route) => false);
+          context.read<LoginBloc>().add(UpdateNotificationToken(id: authResponse.user.id!));
+          context.read<BlocSocketIO>().add(ConnectSocketIO());
+          context.read<BlocSocketIO>().add(ListenDriverAssignedSocketIO());
+          if (authResponse.user.roles!.length > 1) {
+              Navigator.pushNamedAndRemoveUntil(context, 'roles', (route) => false);
+          }
+          else {
+            Navigator.pushNamedAndRemoveUntil(context, 'client/home', (route) => false);
+          }
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(

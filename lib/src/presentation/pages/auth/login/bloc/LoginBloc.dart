@@ -1,7 +1,9 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:indi_app/src/domain/models/AuthResponse.dart';
 import 'package:indi_app/src/domain/useCases/auth/AuthUseCases.dart';
+import 'package:indi_app/src/domain/useCases/users/UsersUseCases.dart';
 import 'package:indi_app/src/domain/utils/Resource.dart';
 import 'package:indi_app/src/presentation/pages/auth/login/bloc/LoginEvent.dart';
 import 'package:indi_app/src/presentation/pages/auth/login/bloc/LoginState.dart';
@@ -10,10 +12,10 @@ import 'package:indi_app/src/presentation/utils/BlocFormItem.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   
   AuthUseCases authUseCases;
-  // UsersUseCases usersUseCases;
+  UsersUseCases usersUseCases;
   final formKey = GlobalKey<FormState>();
 
-  LoginBloc(this.authUseCases) : super(LoginState()) {
+  LoginBloc(this.authUseCases, this.usersUseCases) : super(LoginState()) {
 
     on<LoginInitEvent>((event, emit) async {
       AuthResponse? authResponse = await authUseCases.getUserSession.run();
@@ -73,16 +75,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       );
     });
 
-    // on<UpdateNotificationToken>((event, emit) async {
-    //   try {
-    //     String? token = await FirebaseMessaging.instance.getToken();
-    //     if (token != null) {
-    //       Resource response = await usersUseCases.updateNotificationToken.run(event.id, token);
-    //     }  
-    //   } catch (e) {
-    //     print('ERROR ACTUALIZANDO TOKEN: $e');
-    //   }
+    on<UpdateNotificationToken>((event, emit) async {
+      try {
+        String? token = await FirebaseMessaging.instance.getToken();
+        if (token != null) {
+          Resource response = await usersUseCases.updateNotificationToken.run(event.id, token);
+        }  
+      } catch (e) {
+        print('ERROR ACTUALIZANDO TOKEN: $e');
+      }
       
-    // });
+    });
   }
 }

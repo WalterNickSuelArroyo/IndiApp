@@ -1,85 +1,68 @@
 import 'package:flutter/material.dart';
 
-class DefaultButton extends StatefulWidget {
-  final Function() onPressed;
-  final String text;
-  final Color color;
-  final Color textColor;
-  final EdgeInsetsGeometry margin;
+// ignore: must_be_immutable
+class DefaultButton extends StatelessWidget {
+
+  Function() onPressed;
+  String text;
+  Color color;
+  Color textColor;
+  EdgeInsetsGeometry margin;
+  double? width;
+  double height;
+  IconData? iconData;
+  Color iconColor;
 
   DefaultButton({
     required this.text,
     required this.onPressed,
     this.color = Colors.white,
     this.textColor = Colors.black,
-    this.margin = const EdgeInsets.only(bottom: 20, left: 20, right: 20),
+    this.margin = const EdgeInsets.only(bottom: 20, left: 40, right: 40),
+    this.height = 45,
+    this.width,
+    this.iconData,
+    this.iconColor = Colors.blueAccent
   });
 
   @override
-  _DefaultButtonState createState() => _DefaultButtonState();
-}
-
-class _DefaultButtonState extends State<DefaultButton>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<Color?> _colorAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 300),
-    );
-
-    _colorAnimation = ColorTween(
-      begin: Color(0xFF01CFFF),
-      end: Color(0xFFF6DA2D),
-    ).animate(_controller);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _onPressedColor() {
-    _controller.forward().then((value) => _controller.reverse());
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 45,
-      width: MediaQuery.of(context).size.width,
-      margin: widget.margin,
-      child: AnimatedBuilder(
-        animation: _colorAnimation,
-        builder: (context, child) {
-          return ElevatedButton(
-            onPressed: () {
-              _onPressedColor();
-              widget.onPressed();
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor:
-                  _colorAnimation.value ?? widget.color,
-            ),
-            child: InkWell(
-              splashColor:
-                  Color(0xFFF6DA2D),
-              child: Text(
-                widget.text,
-                style: TextStyle(
-                    color: widget.textColor,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
+    return  Container(
+      height: height,
+      width: width == null ? MediaQuery.of(context).size.width : width,
+      // alignment: Alignment.center,
+      margin: margin,
+      child: ElevatedButton(
+        onPressed: () {
+          onPressed();
+        }, 
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          )
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            iconData != null 
+            ? Icon(
+              iconData, 
+              color: iconColor,
+              size: 30,
+            ) 
+            : Container(),
+            SizedBox(width: iconData != null ? 7 : 0),
+            Text(
+              text,
+              style: TextStyle(
+                color: textColor,
+                fontSize: 18,
+                fontWeight: FontWeight.bold
               ),
             ),
-          );
-        },
+          ],
+        )
       ),
     );
   }

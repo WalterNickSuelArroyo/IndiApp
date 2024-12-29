@@ -20,9 +20,9 @@ class SaveUserSession extends LoginEvent {
   SaveUserSession({ required this.authResponse });
 }
 
-// class UpdateNotificationToken extends LoginEvent {
-//   final int id;
-//   UpdateNotificationToken({required this.id});
-// }
+class UpdateNotificationToken extends LoginEvent {
+  final int id;
+  UpdateNotificationToken({required this.id});
+}
 
 class FormSubmit extends LoginEvent {}

@@ -7,8 +7,8 @@ class User {
     String? email;
     String phone;
     String? password;
-    dynamic? image;
-    dynamic? notificationToken;
+    String? image;
+    String? notificationToken;
     DateTime? createdAt;
     DateTime? updatedAt;
     List<Role>? roles;
